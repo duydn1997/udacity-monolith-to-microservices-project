@@ -1,16 +1,15 @@
-
 version: 2.1
 
 workflows:
   build:
     jobs:
       - build
-jobs:      
+jobs:
   build:
     machine: true
     steps:
       - checkout
-      - run:    
+      - run:
           name: build
           command: |
             # Build
@@ -24,17 +23,17 @@ jobs:
               echo 'START TAGGING'
               docker tag udagram-api-feed duydn97/udagram-api-feed:v1 
               docker tag udagram-api-user duydn97/udagram-api-user:v1 
-              docker tag udagram-frontend duydn97/udagram-frontend:v1 
+              docker tag udagram-frontend duydn97/udagram-frontend:v2 
               docker tag reverseproxy duydn97/reverseproxy:v1
 
               echo 'DOCKER IMAGE LS'
               docker image ls
-              
+
       - run:
           name: after_success
           command: |
             echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
             docker push duydn97/udagram-api-feed:v1
             docker push duydn97/udagram-api-user:v1 
-            docker push duydn97/udagram-frontend:v1 
+            docker push duydn97/udagram-frontend:v2 
             docker push duydn97/reverseproxy:v1
